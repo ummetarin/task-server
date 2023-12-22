@@ -55,7 +55,7 @@ async function run() {
     
      app.delete('/addtask/data/:id',async(req,res)=>{
         const id=req.params.id;
-        const query={ _id : id}
+        const query={ _id :new ObjectId(id)}
         const result=await addData.deleteOne(query);
         res.send(result)
        })
@@ -98,24 +98,36 @@ async function run() {
        res.send(result)
      } )
 
-     app.put('/com/datatask/:id',async(req,res)=>{
-      const id=req.params.id;
-      const filter={_id: new ObjectId(id)}
-      const options={ upsert :true}
-      const updatedata=req.body;
-       const dataupdate= {
+     app.put('/person/data', async (req, res) => {
+      const updateData = req.body;
     
-        $set:{
-          email:updatedata.email,
-          Cat:updatedata.Cat,
-          Des:updatedata.Des,
-          Priority:updatedata.Priority,
-          Title:updatedata.Title,
-        }
-      }
-      const result=await addData.updateOne(filter, dataupdate,options)
-      res.send(result)
-    })
+      const result = await addData.updateMany({}, { $set:{
+        name:updateData.name,
+      
+
+      } });
+      res.send(result);
+    });
+
+
+    //  app.put('/com/datatask/:id',async(req,res)=>{
+    //   const id=req.params.id;
+    //   const filter={_id: new ObjectId(id)}
+    //   const options={ upsert :true}
+    //   const updatedata=req.body;
+    //    const dataupdate= {
+    
+    //     $set:{
+    //       Dead:updatedata.Dead,
+    //       Cat:updatedata.Cat,
+    //       Des:updatedata.Des,
+    //       Priority:updatedata.Priority,
+    //       Title:updatedata.Title,
+    //     }
+    //   }
+    //   const result=await addData.updateOne(filter, dataupdate,options)
+    //   res.send(result)
+    // })
 
 
     await client.connect();
